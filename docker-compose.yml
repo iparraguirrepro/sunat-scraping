@@ -1,0 +1,33 @@
+version: '3'
+services:
+#  mongo:
+#    image: mongo:latest
+#    container_name: sunat-mongo
+#    restart: unless-stopped
+#    volumes:
+#      - ./volumes/mongo:/data/db/
+#    ports:
+#      - "27017:27017"
+#    networks:
+#      - scraper_net
+  scraper:
+    build: .
+    container_name: sunat-api
+#    depends_on:
+#      mongo:
+#        condition: service_started
+    ports:
+      - "8080:8080"
+      - "27017:27017"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
+    networks:
+      - scraper_net
+
+networks:
+  scraper_net:
+    driver: bridge

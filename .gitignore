@@ -1,0 +1,8 @@
+prd.Dockerfile
+shell.sh
+
+.env.prd
+
+.idea
+kompose
+volumes
