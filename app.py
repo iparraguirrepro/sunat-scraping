@@ -1,18 +1,28 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from dotenv import load_dotenv
 
+from consultaUnificadaLibre.consulta import validateDocument
 from jrmS00Alias.jrmS00Alias import run
 
 load_dotenv()
 
 app = Flask(__name__)
 
-
 @app.route('/jrmS00Alias/<ruc>', methods=['GET'])
 def jrmS00Alias(ruc):
     scrapResponse = run(ruc, True)
     return jsonify(scrapResponse)
 
+
+@app.route('/consultaUnificadaLibre', methods=['GET'])
+def consultaUnificadaLibre():
+    ruc = request.args.get('ruc')
+    total = request.args.get('total')
+    date = request.args.get('date')
+    serie = request.args.get('serie')
+    number = request.args.get('number')
+    scrapResponse = validateDocument(ruc, serie, number, total, date)
+    return jsonify(scrapResponse)
 
 @app.route('/jrmS00Alias/longitudes/<ruc>', methods=['GET'])
 def jrmS00AliasChar(ruc):
